@@ -1,0 +1,4 @@
+xproperty_realty:
+    resource: "@BubnovKelnikTwigDeclensionBundle/Controller/"
+    type:     annotation
+    prefix:   /

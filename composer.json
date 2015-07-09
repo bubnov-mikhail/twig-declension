@@ -1,0 +1,33 @@
+{
+    "name": "bubnovKelnik/twig-declension",
+    "description": "Twig filter for declension",
+    "keywords":["twig", "filter", "declension"],
+    "type":"library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3",
+        "twig/twig": "~1.18",
+        "symfony/symfony": "2.3.*",
+        "doctrine/orm": "~2.2,>=2.2.3",
+        "doctrine/doctrine-bundle": "1.2.*",
+        "knplabs/knp-paginator-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "BubnovKelnik\\TwigDeclensionBundle\\": "src/BubnovKelnik/TwigDeclensionBundle"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mihail Bubnov",
+            "email": "bubnov.mihail@gmail.com"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.0"
+        }
+    }
+}

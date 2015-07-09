@@ -1,0 +1,6 @@
+services:
+    twig.declension:
+        class: BubnovKelnik\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: twig.extension }
