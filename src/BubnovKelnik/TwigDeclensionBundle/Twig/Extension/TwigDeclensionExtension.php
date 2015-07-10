@@ -11,6 +11,12 @@ class TwigDeclensionExtension extends \Twig_Extension
      * @var EntityManager
      */
     private $em;
+    
+    /**
+     * Cached Declension
+     * @var Array 
+     */
+    private $cached;
 
     /**
      *
@@ -18,6 +24,7 @@ class TwigDeclensionExtension extends \Twig_Extension
      */
     public function __construct(EntityManager $em)
     {
+        $this->cached = [];
         $this->em = $em;
     }
 
@@ -41,8 +48,7 @@ class TwigDeclensionExtension extends \Twig_Extension
             return $infinitive;
         }
         
-        $repository = $this->em->getRepository('BubnovKelnikTwigDeclensionBundle:Declension');
-        if($declension = $repository->findOneByInfinitive($infinitive)){
+        if($declension = $this->getDeclension($infinitive)){
             $form = $declension->getForm($form, $count);
             
             return $this->fixCase($infinitive, $form);
@@ -83,4 +89,49 @@ class TwigDeclensionExtension extends \Twig_Extension
         return $fc.mb_substr($str, 1 , mb_strlen($str), $encode);
     }
 
+    /**
+     * 
+     * @param String $infinitive
+     * @return Declension | null
+     */
+    private function getDeclension($infinitive = '')
+    {
+        if($declension = $this->getCached($infinitive)){
+            return $declension;
+        }
+
+        $repository = $this->em->getRepository('BubnovKelnikTwigDeclensionBundle:Declension');
+        if($declension = $repository->findOneByInfinitive($infinitive)){
+            $this->setCached($declension);
+            
+            return $declension;
+        }
+
+        return null;
+    }
+    
+    /**
+     * 
+     * @param String $infinitive
+     * @return Declension | null
+     */
+    private function getCached($infinitive = '') {
+        $infinitive = mb_strtolower($infinitive, 'UTF-8');
+        if(isset($this->cached[md5($infinitive)])){
+            return $this->cached[md5($infinitive)];
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 
+     * @param Declension $declension
+     * @return \BubnovKelnik\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
+     */
+    private function setCached(Declension $declension) {
+        $this->cached[md5(mb_strtolower($declension->getInfinitive(), 'UTF-8'))] = $declension;
+        
+        return $this;
+    }
 }
