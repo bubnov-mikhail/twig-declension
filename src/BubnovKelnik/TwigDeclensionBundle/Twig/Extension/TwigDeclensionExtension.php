@@ -99,6 +99,9 @@ class TwigDeclensionExtension extends \Twig_Extension
         if($declension = $this->getCached($infinitive)){
             return $declension;
         }
+        if($declension === false){
+            return null;
+        }
 
         $repository = $this->em->getRepository('BubnovKelnikTwigDeclensionBundle:Declension');
         if($declension = $repository->findOneByInfinitive($infinitive)){
@@ -106,7 +109,8 @@ class TwigDeclensionExtension extends \Twig_Extension
             
             return $declension;
         }
-
+        $this->setCachedNull($infinitive);
+        
         return null;
     }
     
@@ -118,9 +122,10 @@ class TwigDeclensionExtension extends \Twig_Extension
     private function getCached($infinitive = '') {
         $infinitive = mb_strtolower($infinitive, 'UTF-8');
         if(isset($this->cached[md5($infinitive)])){
+
             return $this->cached[md5($infinitive)];
         }
-        
+
         return null;
     }
     
@@ -131,6 +136,18 @@ class TwigDeclensionExtension extends \Twig_Extension
      */
     private function setCached(Declension $declension) {
         $this->cached[md5(mb_strtolower($declension->getInfinitive(), 'UTF-8'))] = $declension;
+
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param String $infinitive
+     * @return \BubnovKelnik\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
+     */
+    private function setCachedNull($infinitive = '') {
+        $infinitive = mb_strtolower($infinitive, 'UTF-8');
+        $this->cached[md5($infinitive)] = false;
         
         return $this;
     }
