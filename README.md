@@ -61,6 +61,17 @@
         resource: "@BubnovKelnikTwigDeclensionBundle/Resources/config/routing/routing.yml"
     ```
 
+    Если на странице используется множество склонений, имеет смысл сразу загрузить все формы
+    Для этого переопределите сервис-расширение в app/config.yml, передав true в качестве второго аргумента конструктора
+    ```yml
+    # app/config.yml
+    twig.declension:
+            class: BubnovKelnik\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
+            arguments: [@doctrine.orm.entity_manager, true]
+            tags:
+                - { name: twig.extension }
+    ```
+
 2) Использование
 -------------------------------------
     Добавить ссылку в административной панели или меню

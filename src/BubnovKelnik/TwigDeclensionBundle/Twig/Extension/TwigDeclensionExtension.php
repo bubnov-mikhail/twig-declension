@@ -22,10 +22,13 @@ class TwigDeclensionExtension extends \Twig_Extension
      *
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, $preChached = false)
     {
         $this->cached = [];
         $this->em = $em;
+        if($preChached){
+            $this->preCache();
+        }
     }
 
     /**
@@ -150,5 +153,16 @@ class TwigDeclensionExtension extends \Twig_Extension
         $this->cached[md5($infinitive)] = false;
         
         return $this;
+    }
+    
+    /**
+     * Gets all Declensions from DB for precache
+     */
+    public function preCache(){
+        if($declensions = $this->em->getRepository('BubnovKelnikTwigDeclensionBundle:Declension')->findAll()){
+            foreach($declensions as $declension){
+                $this->setCached($declension);
+            }
+        }
     }
 }
