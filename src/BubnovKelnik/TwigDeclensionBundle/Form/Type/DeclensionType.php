@@ -28,6 +28,7 @@ class DeclensionType extends AbstractType
             $builder->add($fullForm, null, [
                 'label' => 'twig-declension.forms.' . $form,
                 'required' => $required,
+                'attr' => ['twig-declension-form' => $form],
             ]);
         }
     }

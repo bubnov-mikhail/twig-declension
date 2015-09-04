@@ -17,15 +17,22 @@ class TwigDeclensionExtension extends \Twig_Extension
      * @var Array 
      */
     private $cached;
+    
+    /**
+     * Do create Declension if not exist yet
+     * @var Boolean 
+     */
+    private $autoCreate;
 
     /**
      *
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em, $preChached = false)
+    public function __construct(EntityManager $em, $preChached = false, $autoCreate = false)
     {
         $this->cached = [];
         $this->em = $em;
+        $this->autoCreate = $autoCreate;
         if($preChached){
             $this->preCache();
         }
@@ -58,6 +65,46 @@ class TwigDeclensionExtension extends \Twig_Extension
         }
 
         return $infinitive;
+    }
+    
+    /**
+     * Get geclensions of the infinitive
+     * @param String $infinitive
+     * @return Array
+     */
+    public function getDeclensions($infinitive = '') {
+        if(empty($infinitive)){
+            return null;
+        }
+        
+        try {
+            $obInflect = new \Yandex\Inflector\Client();
+            $obInflect->inflect($infinitive);
+            
+            $data = $obInflect->getInflections();
+            
+            return [
+                Declension::INFINITIVE => $data[0],
+                Declension::GENITIVE => $data[1],
+                Declension::DATIVE => $data[2],
+                Declension::ACCUSATIVE => $data[3],
+                Declension::ABLATIVE => $data[4],
+                Declension::PREPOSITIONAL => $data[5],
+            ];
+        } catch (\Exception $e){
+            return null;
+        }
+    }
+    
+    /**
+     * Gets all Declensions from DB for precache
+     */
+    private function preCache(){
+        if($declensions = $this->em->getRepository('BubnovKelnikTwigDeclensionBundle:Declension')->findAll()){
+            foreach($declensions as $declension){
+                $this->setCached($declension);
+            }
+        }
     }
     
     /**
@@ -112,6 +159,29 @@ class TwigDeclensionExtension extends \Twig_Extension
             
             return $declension;
         }
+        
+        if($this->autoCreate){
+            if($declensions = $this->getDeclensions($infinitive)){
+                $declension = new Declension();
+                
+                $declension
+                    ->setInfinitive($declensions[Declension::INFINITIVE])
+                    ->setGenitive($declensions[Declension::GENITIVE])
+                    ->setDative($declensions[Declension::DATIVE])
+                    ->setAccusative($declensions[Declension::ACCUSATIVE])
+                    ->setAblative($declensions[Declension::ABLATIVE])
+                    ->setPrepositional($declensions[Declension::PREPOSITIONAL])
+                ;       
+                
+                $this->em->persist($declension);
+                $this->em->flush();
+                
+                $this->setCached($declension);
+                
+                return $declension;
+            }
+        }
+        
         $this->setCachedNull($infinitive);
         
         return null;
@@ -153,16 +223,5 @@ class TwigDeclensionExtension extends \Twig_Extension
         $this->cached[md5($infinitive)] = false;
         
         return $this;
-    }
-    
-    /**
-     * Gets all Declensions from DB for precache
-     */
-    public function preCache(){
-        if($declensions = $this->em->getRepository('BubnovKelnikTwigDeclensionBundle:Declension')->findAll()){
-            foreach($declensions as $declension){
-                $this->setCached($declension);
-            }
-        }
     }
 }

@@ -3,6 +3,7 @@
 namespace BubnovKelnik\TwigDeclensionBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -261,5 +262,30 @@ class DeclensionController extends Controller
             'entities' => $pagination,
             'form' => $form->createView(),
         );
+    }
+    
+    /**
+     * Lists all Declension entities.
+     * 
+     * @Route("/guess", name="admin_twig_declension_guess", options={"expose"=true})
+     * @Method("POST")
+     * @Secure(roles="ROLE_ADMIN")
+     * @return JsonResponse
+     */
+    public function guessDeclensionAction(Request $request){
+        $infinitive = trim($request->request->get('infinitive'));
+        $declensions = $this->get('twig.declension')->getDeclensions($infinitive);
+        
+        if(!$infinitive || !$declensions){
+            $response = new JsonResponse();
+            $response->setData(['status' => 'error']);
+            
+            return $response;
+        }
+        
+        $response = new JsonResponse();
+        $response->setData(['status' => 'success', 'declensions' => $declensions]);
+        
+        return $response;
     }
 }
