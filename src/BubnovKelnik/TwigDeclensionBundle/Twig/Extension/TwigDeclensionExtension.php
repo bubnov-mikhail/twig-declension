@@ -85,11 +85,11 @@ class TwigDeclensionExtension extends \Twig_Extension
             
             return [
                 Declension::INFINITIVE => $data[0],
-                Declension::GENITIVE => $data[1],
-                Declension::DATIVE => $data[2],
-                Declension::ACCUSATIVE => $data[3],
-                Declension::ABLATIVE => $data[4],
-                Declension::PREPOSITIONAL => $data[5],
+                Declension::GENITIVE => isset($data[1]) ? $data[1] : $data[0],
+                Declension::DATIVE => isset($data[2]) ? $data[2] : $data[0],
+                Declension::ACCUSATIVE => isset($data[3]) ? $data[3] : $data[0],
+                Declension::ABLATIVE => isset($data[4]) ? $data[4] : $data[0],
+                Declension::PREPOSITIONAL => isset($data[5]) ? $data[5] : $data[0],
             ];
         } catch (\Exception $e){
             return null;
