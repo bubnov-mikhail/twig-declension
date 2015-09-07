@@ -4,8 +4,9 @@
     "keywords":["twig", "filter", "declension"],
     "type":"library",
     "license": "MIT",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=5.3.3",
         "twig/twig": "~1.18",
@@ -29,12 +30,12 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1.1"
+            "dev-master": "1.1.2"
         }
     },
     "repositories": [
         {
-            "type": "vcs",
+            "type": "git",
             "url":  "git@github.com:bubnovKelnik/yandex-inflector.git"
         }
     ]
