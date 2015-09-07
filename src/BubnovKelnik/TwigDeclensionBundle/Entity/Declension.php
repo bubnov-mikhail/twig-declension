@@ -191,7 +191,7 @@ class Declension
      */
     public function setInfinitive($infinitive)
     {
-        $this->infinitive = mb_strtolower($infinitive, 'UTF-8');
+        $this->infinitive = $infinitive;
 
         return $this;
     }
@@ -214,7 +214,7 @@ class Declension
      */
     public function setGenitive($genitive)
     {
-        $this->genitive = mb_strtolower($genitive, 'UTF-8');
+        $this->genitive = $genitive;
 
         return $this;
     }
@@ -237,7 +237,7 @@ class Declension
      */
     public function setDative($dative)
     {
-        $this->dative = mb_strtolower($dative, 'UTF-8');
+        $this->dative = $dative;
 
         return $this;
     }
@@ -260,7 +260,7 @@ class Declension
      */
     public function setAccusative($accusative)
     {
-        $this->accusative = mb_strtolower($accusative, 'UTF-8');
+        $this->accusative = $accusative;
 
         return $this;
     }
@@ -283,7 +283,7 @@ class Declension
      */
     public function setAblative($ablative)
     {
-        $this->ablative = mb_strtolower($ablative, 'UTF-8');
+        $this->ablative = $ablative;
 
         return $this;
     }
@@ -306,7 +306,7 @@ class Declension
      */
     public function setPrepositional($prepositional)
     {
-        $this->prepositional = mb_strtolower($prepositional, 'UTF-8');
+        $this->prepositional = $prepositional;
 
         return $this;
     }
@@ -329,7 +329,7 @@ class Declension
      */
     public function setMulti($multi)
     {
-        $this->multi = mb_strtolower($multi, 'UTF-8');
+        $this->multi = $multi;
 
         return $this;
     }

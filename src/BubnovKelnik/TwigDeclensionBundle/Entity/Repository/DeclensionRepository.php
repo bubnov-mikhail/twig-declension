@@ -54,6 +54,6 @@ class DeclensionRepository extends EntityRepository
      */
     public function findOneByInfinitive($infinitive = '')
     {
-        return $this->findOneBy(['infinitive' => mb_strtolower($infinitive, 'UTF-8')]);
+        return $this->findOneBy(['infinitive' => $infinitive]);
     }
 }
