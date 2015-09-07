@@ -30,6 +30,7 @@
         <thead>
             <tr>
                 <th>{{ 'twig-declension.forms.inf' | trans }}</th>
+                <th>{{ 'twig-declension.needs_work' | trans }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -38,6 +39,13 @@
             <tr>
                 <td>
                     <a href="{{ path('admin_twig_declension_edit', { 'id': entity.id }) }}">{{ entity }}</a>
+                </td>
+                <td>
+                    {% if entity.needWork %}
+                        {{ 'twig-declension.yes' }}
+                    {% else %}
+                        {{ 'twig-declension.no' }}
+                    {% endif %}
                 </td>
                 <td>
                     <a href="{{ path('admin_twig_declension_edit', { 'id': entity.id }) }}" title="{{ 'twig-declension.edit' | trans}}">

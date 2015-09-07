@@ -386,4 +386,17 @@ class Declension
     {
         return $this->genitive_plural;
     }
+    
+    /**
+     * @return Boolean
+     */
+    public function isNeedWork(){
+        foreach(self::$forms as $form){
+            if(empty($this->$form) && $form !== 'plural'){
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }

@@ -15,6 +15,11 @@ class FilterDeclensionFormType extends AbstractType
                 'label' => 'twig-declension.forms.inf',
                 'required' => false,
             ])
+            ->add('needs_work', 'checkbox', [
+                'label' => 'twig-declension.needs_work',
+                'data' => false,
+                'required' => false,
+            ])
             ->setMethod('POST')
         ;
     }

@@ -3,6 +3,7 @@
 namespace BubnovKelnik\TwigDeclensionBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use BubnovKelnik\TwigDeclensionBundle\Entity\Declension;
 
 /**
  * DeclensionRepository
@@ -27,9 +28,19 @@ class DeclensionRepository extends EntityRepository
             if(empty($value)){
                 continue;
             }
-
+            if($name === 'needs_work'){
+                foreach(Declension::$forms as $form){
+                    if($form === 'plural'){
+                        continue;
+                    }
+                    $qb
+                        ->orWhere('d.' . $form . ' IS NULL')
+                    ;
+                }
+                continue;
+            }
             $qb
-                ->where('d.' . $name . ' = :'. $name)
+                ->andWhere('d.' . $name . ' = :'. $name)
                 ->setParameter(':'. $name, $value)
             ;
         }

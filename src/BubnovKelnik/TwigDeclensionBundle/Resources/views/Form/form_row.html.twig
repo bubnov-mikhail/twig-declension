@@ -49,19 +49,19 @@
         </table>
         {% if is_granted('ROLE_ADMIN') %}
             {% if form.vars.allow_add and ( form.vars.attr['disallow_add'] is not defined or form.vars.attr['disallow_add'] == false) %}
-                <input type="button" id="{{ form.vars.full_name }}_add" name="{{ form.vars.full_name }}_add" value="{{ 'common.add'| trans }}" class="btn btn-primary collection-add" target="#{{ form.vars.id }}"/>
+                <input type="button" id="{{ form.vars.full_name }}_add" name="{{ form.vars.full_name }}_add" value="{{ 'twig-declension.add'| trans }}" class="btn btn-primary collection-add" target="#{{ form.vars.id }}"/>
             {% endif %}
 
             {% if form.vars.attr['allow_add_many'] is defined and form.vars.attr['allow_add_many'] %}
-                <input type="button" id="{{ form.vars.full_name }}_add_many" name="{{ form.vars.full_name }}_add_many" value="{% if form.vars.attr['add_many_name'] is defined %}{{ form.vars.attr['add_many_name'] | trans }}{% else %}{{ 'common.add_many'| trans }}{% endif %}" class="btn btn-primary collection-add-many tooltip-able" target="#{{ form.vars.id }}" title="{{ 'common.add_many_tip' | trans }}" role="button" data-toggle="modal" data-backdrop="static" data-target="#addManyModal"/>
+                <input type="button" id="{{ form.vars.full_name }}_add_many" name="{{ form.vars.full_name }}_add_many" value="{% if form.vars.attr['add_many_name'] is defined %}{{ form.vars.attr['add_many_name'] | trans }}{% else %}{{ 'twig-declension.add_many'| trans }}{% endif %}" class="btn btn-primary collection-add-many tooltip-able" target="#{{ form.vars.id }}" title="{{ 'twig-declension.add_many_tip' | trans }}" role="button" data-toggle="modal" data-backdrop="static" data-target="#addManyModal"/>
             {% endif %}
 
             {% if form.vars.attr['allow_update_list'] is defined and form.vars.attr['allow_update_list'] %}
-                <input type="button" id="{{ form.vars.full_name }}_update_list" name="{{ form.vars.full_name }}_update_listy" value="{% if form.vars.attr['update_list_name'] is defined %}{{ form.vars.attr['update_list_name'] | trans }}{% else %}{{ 'common.update_list'| trans }}{% endif %}" class="btn btn-primary collection-update-list tooltip-able" target="#{{ form.vars.id }}" title="{{ 'common.update_list_tip' | trans }}" role="button" data-toggle="modal" data-backdrop="static" data-target="#updateListModal"/>
+                <input type="button" id="{{ form.vars.full_name }}_update_list" name="{{ form.vars.full_name }}_update_listy" value="{% if form.vars.attr['update_list_name'] is defined %}{{ form.vars.attr['update_list_name'] | trans }}{% else %}{{ 'twig-declension.update_list'| trans }}{% endif %}" class="btn btn-primary collection-update-list tooltip-able" target="#{{ form.vars.id }}" title="{{ 'twig-declension.update_list_tip' | trans }}" role="button" data-toggle="modal" data-backdrop="static" data-target="#updateListModal"/>
             {% endif %}
 
             {% if form.vars.attr['allow_clear_list'] is defined and form.vars.attr['allow_clear_list'] %}
-                <input type="button" id="{{ form.vars.full_name }}_clear_list" name="{{ form.vars.full_name }}_clear_list" value="{% if form.vars.attr['clear_list_name'] is defined %}{{ form.vars.attr['clear_list_name'] | trans }}{% else %}{{ 'common.clear_list'| trans }}{% endif %}" class="btn btn-primary collection-clear-list tooltip-able" target="#{{ form.vars.id }}" title="{{ 'common.clear_list_tip' | trans }}"/>
+                <input type="button" id="{{ form.vars.full_name }}_clear_list" name="{{ form.vars.full_name }}_clear_list" value="{% if form.vars.attr['clear_list_name'] is defined %}{{ form.vars.attr['clear_list_name'] | trans }}{% else %}{{ 'twig-declension.clear_list'| trans }}{% endif %}" class="btn btn-primary collection-clear-list tooltip-able" target="#{{ form.vars.id }}" title="{{ 'twig-declension.clear_list_tip' | trans }}"/>
             {% endif %}
 
         {% endif %}
