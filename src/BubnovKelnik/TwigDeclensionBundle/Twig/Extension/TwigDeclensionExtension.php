@@ -161,25 +161,23 @@ class TwigDeclensionExtension extends \Twig_Extension
         }
         
         if($this->autoCreate){
+            $declension = new Declension();
+            $declension->setInfinitive($infinitive);
             if($declensions = $this->getDeclensions($infinitive)){
-                $declension = new Declension();
-                
                 $declension
-                    ->setInfinitive($declensions[Declension::INFINITIVE])
                     ->setGenitive($declensions[Declension::GENITIVE])
                     ->setDative($declensions[Declension::DATIVE])
                     ->setAccusative($declensions[Declension::ACCUSATIVE])
                     ->setAblative($declensions[Declension::ABLATIVE])
                     ->setPrepositional($declensions[Declension::PREPOSITIONAL])
                 ;       
-                
-                $this->em->persist($declension);
-                $this->em->flush();
-                
-                $this->setCached($declension);
-                
-                return $declension;
             }
+            $this->em->persist($declension);
+            $this->em->flush();
+
+            $this->setCached($declension);
+
+            return $declension;
         }
         
         $this->setCachedNull($infinitive);
