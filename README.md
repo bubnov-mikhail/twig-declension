@@ -6,7 +6,8 @@
 * Подключается как расширение к шаблонизатору twig
 * Применяется к строке как фильтр в шаблоне
 * Находит склоняемое слово в предварительно наполненной таблице и возвращает требуемую форму
-* В случае отсутствия соответствующей записи в БД или при пустом склонении возвращает исходную строку или именительный падеж 
+* В случае отсутствия соответствующей записи в БД или при пустом склонении возвращает исходную строку или именительный падеж
+* Использует standalone библиотеку phpMophy (http://phpmorphy.sourceforge.net/dokuwiki/)
 
 1) Установка
 ----------------------------------
@@ -43,7 +44,7 @@
     ```sh
     app/console doctrine:schema:update
     ```
-    
+
     Настроить config.yml
     ```yml
     # app/config.yml
@@ -62,12 +63,12 @@
     ```
 
     Если на странице используется множество склонений, имеет смысл сразу загрузить все формы
-    Для этого переопределите сервис-расширение в app/config.yml, передав true в качестве второго аргумента конструктора
+    Для этого переопределите сервис-расширение в app/config.yml, передав true в качестве третьего аргумента конструктора
     ```yml
     # app/config.yml
     twig.declension:
             class: BubnovKelnik\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
-            arguments: [@doctrine.orm.entity_manager, true]
+            arguments: [@doctrine.orm.entity_manager, %locale%, true]
             tags:
                 - { name: twig.extension }
     ```
@@ -163,12 +164,12 @@
     ```
 
     Вы также можете настроить автоматическое создание форм слов, запрашиваемых в twig.
-    Для этого переопределите сервис-расширение в app/config.yml, передав true в качестве третьего аргумента конструктора
+    Для этого переопределите сервис-расширение в app/config.yml, передав true в качестве четвертого аргумента конструктора
     ```yml
     # app/config.yml
     twig.declension:
             class: BubnovKelnik\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
-            arguments: [@doctrine.orm.entity_manager, null, true]
+            arguments: [@doctrine.orm.entity_manager, %locale%, null, true]
             tags:
                 - { name: twig.extension }
     ```
