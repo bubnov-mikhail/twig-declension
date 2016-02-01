@@ -9,6 +9,8 @@ use BubnovKelnik\TwigDeclensionBundle\Entity\Declension;
 
 class DeclensionType extends AbstractType
 {
+    const FORM_NAME = 'bubnovkelnik_twigdeclensionbundle_declension';
+    
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -39,7 +41,7 @@ class DeclensionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BubnovKelnik\TwigDeclensionBundle\Entity\Declension'
+            'data_class' => Declension::class
         ));
     }
 
@@ -48,6 +50,6 @@ class DeclensionType extends AbstractType
      */
     public function getName()
     {
-        return 'bubnovkelnik_twigdeclensionbundle_declension';
+        return self::FORM_NAME;
     }
 }

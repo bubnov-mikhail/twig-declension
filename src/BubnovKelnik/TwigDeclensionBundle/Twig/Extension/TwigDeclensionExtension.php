@@ -4,6 +4,7 @@ namespace BubnovKelnik\TwigDeclensionBundle\Twig\Extension;
 
 use Doctrine\ORM\EntityManager;
 use BubnovKelnik\TwigDeclensionBundle\Entity\Declension;
+use cijic\phpMorphy\Morphy;
 
 class TwigDeclensionExtension extends \Twig_Extension
 {
@@ -11,6 +12,12 @@ class TwigDeclensionExtension extends \Twig_Extension
      * @var EntityManager
      */
     private $em;
+
+    /**
+     *
+     * @var String
+     */
+    private $locale;
     
     /**
      * Cached Declension
@@ -24,14 +31,26 @@ class TwigDeclensionExtension extends \Twig_Extension
      */
     private $autoCreate;
 
+    private static $morphyGrammems = [
+        Declension::INFINITIVE => ['ИМ', 'ЕД'],
+        Declension::GENITIVE => ['РД', 'ЕД'],
+        Declension::DATIVE => ['ДТ', 'ЕД'],
+        Declension::ACCUSATIVE => ['ВН', 'ЕД'],
+        Declension::ABLATIVE => ['ТВ', 'ЕД'],
+        Declension::PREPOSITIONAL => ['ПР', 'ЕД'],
+        Declension::MULTI => ['ИМ', 'МН'],
+        Declension::GENITIVE_PLURAL => ['РД', 'МН'],
+    ];
+
     /**
      *
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em, $preChached = false, $autoCreate = false)
+    public function __construct(EntityManager $em, $locale = 'ru', $preChached = false, $autoCreate = false)
     {
         $this->cached = [];
         $this->em = $em;
+        $this->locale = $locale;
         $this->autoCreate = $autoCreate;
         if($preChached){
             $this->preCache();
@@ -54,6 +73,7 @@ class TwigDeclensionExtension extends \Twig_Extension
      * @return string
      */
     public function onDeclension($infinitive = '', $form = Declension::INFINITIVE, $count = null) {
+        $infinitive = (string) $infinitive;
         if(empty($infinitive)){
             return $infinitive;
         }
@@ -78,19 +98,23 @@ class TwigDeclensionExtension extends \Twig_Extension
         }
         
         try {
-            $obInflect = new \Yandex\Inflector\Client();
-            $obInflect->inflect($infinitive);
+            $morphy = new Morphy($this->locale);
+            $paradigms = $morphy->findWord(mb_strtoupper($infinitive, 'UTF-8'));
+            if(false === $paradigms || !isset($paradigms[0])){
+                return null;
+            }
+            $paradigm = $paradigms[0];            
+            $result = [];
+            foreach(self::$morphyGrammems as $declention => $grammems){
+                $wordsInForm = $paradigm->getWordFormsByGrammems($grammems);
+                $res = (is_array($wordsInForm) && isset($wordsInForm[0]) && is_object($wordsInForm[0]))
+                    ? mb_strtolower($wordsInForm[0]->getWord(), 'UTF-8')
+                    : $infinitive
+                ;
+                $result[$declention] = $res;
+            }
             
-            $data = $obInflect->getInflections();
-            
-            return [
-                Declension::INFINITIVE => $data[0],
-                Declension::GENITIVE => isset($data[1]) ? $data[1] : $data[0],
-                Declension::DATIVE => isset($data[2]) ? $data[2] : $data[0],
-                Declension::ACCUSATIVE => isset($data[3]) ? $data[3] : $data[0],
-                Declension::ABLATIVE => isset($data[4]) ? $data[4] : $data[0],
-                Declension::PREPOSITIONAL => isset($data[5]) ? $data[5] : $data[0],
-            ];
+            return $result;
         } catch (\Exception $e){
             return null;
         }
@@ -100,7 +124,7 @@ class TwigDeclensionExtension extends \Twig_Extension
      * Gets all Declensions from DB for precache
      */
     private function preCache(){
-        if($declensions = $this->em->getRepository('BubnovKelnikTwigDeclensionBundle:Declension')->findAll()){
+        if($declensions = $this->em->getRepository(Declension::class)->findAll()){
             foreach($declensions as $declension){
                 $this->setCached($declension);
             }
@@ -153,10 +177,10 @@ class TwigDeclensionExtension extends \Twig_Extension
             return null;
         }
 
-        $repository = $this->em->getRepository('BubnovKelnikTwigDeclensionBundle:Declension');
+        $repository = $this->em->getRepository(Declension::class);
         if($declension = $repository->findOneByInfinitive($infinitive)){
             $this->setCached($declension);
-            
+
             return $declension;
         }
         
@@ -166,10 +190,12 @@ class TwigDeclensionExtension extends \Twig_Extension
             if($declensions = $this->getDeclensions($infinitive)){
                 $declension
                     ->setGenitive($declensions[Declension::GENITIVE])
+                    ->setGenitivePlural($declensions[Declension::GENITIVE_PLURAL])
                     ->setDative($declensions[Declension::DATIVE])
                     ->setAccusative($declensions[Declension::ACCUSATIVE])
                     ->setAblative($declensions[Declension::ABLATIVE])
                     ->setPrepositional($declensions[Declension::PREPOSITIONAL])
+                    ->setMulti($declensions[Declension::MULTI])
                 ;       
             }
             $this->em->persist($declension);

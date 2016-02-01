@@ -4,7 +4,7 @@
     "keywords":["twig", "filter", "declension"],
     "type":"library",
     "license": "MIT",
-    "version": "1.2.1",
+    "version": "2.0.0",
     "require": {
         "php": ">=5.3.3",
         "twig/twig": "~1.18",
@@ -13,7 +13,7 @@
         "doctrine/doctrine-bundle": "1.2.*",
         "knplabs/knp-paginator-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.2.*",
-        "mmjurov/yandex-inflector": "1.0.x-dev"
+        "cijic/phpmorphy": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -28,13 +28,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "1.2.1"
+            "dev-master": "2.0.0"
         }
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url":  "git@github.com:mmjurov/yandex-inflector.git"
-        }
-    ]
+    }
 }

@@ -8,6 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FilterDeclensionFormType extends AbstractType
 {
+    const FORM_NAME = 'bubnovkelnik_twigdeclensionbundle_find';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -36,6 +38,6 @@ class FilterDeclensionFormType extends AbstractType
 
     public function getName()
     {
-        return 'bubnovkelnik_twigdeclensionbundle_find';
+        return self::FORM_NAME;
     }
 }
