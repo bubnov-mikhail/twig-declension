@@ -4,14 +4,14 @@
     "keywords":["twig", "filter", "declension"],
     "type":"library",
     "license": "MIT",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "require": {
         "php": ">=5.3.3",
         "twig/twig": "~1.18",
         "symfony/symfony": "2.3.*",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "1.*",
-        "knplabs/knp-paginator-bundle": "dev-master",
+        "knplabs/knp-paginator-bundle": "2.5.3",
         "friendsofsymfony/jsrouting-bundle": "1.2.*",
         "cijic/phpmorphy": "dev-master"
     },
@@ -28,7 +28,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1.0"
+            "dev-master": "2.1.1"
         }
     }
 }
