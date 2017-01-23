@@ -1,5 +1,5 @@
 {
-    "name": "bubnovKelnik/twig-declension",
+    "name": "bubnov-mikhail/twig-declension",
     "description": "Twig filter for declension",
     "keywords":["twig", "filter", "declension"],
     "type":"library",
